@@ -29,6 +29,7 @@ export type EditRoomInfoFormData = {
 	showDiscussions: boolean;
 	joinCode: string;
 	systemMessages: MessageTypesValues[];
+	linkPreview: boolean;
 };
 
 export const useEditRoomInitialValues = (room: IRoomWithRetentionPolicy): Partial<EditRoomInfoFormData> => {
@@ -52,7 +53,9 @@ export const useEditRoomInitialValues = (room: IRoomWithRetentionPolicy): Partia
 			joinCodeRequired: !!joinCodeRequired,
 			systemMessages: Array.isArray(sysMes) ? sysMes : [],
 			hideSysMes: Array.isArray(sysMes) ? !!sysMes?.length : !!sysMes,
+			
 			encrypted,
+			linkPreview: !!room.linkPreview,
 			...(canEditRoomRetentionPolicy &&
 				retentionPolicy?.enabled && {
 					retentionEnabled: retention?.enabled ?? retentionPolicy.isActive,
@@ -78,6 +81,7 @@ export const useEditRoomInitialValues = (room: IRoomWithRetentionPolicy): Partia
 			encrypted,
 			reactWhenReadOnly,
 			canEditRoomRetentionPolicy,
+			room.linkPreview,
 		],
 	);
 };
