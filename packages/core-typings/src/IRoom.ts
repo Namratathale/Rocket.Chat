@@ -19,6 +19,7 @@ export interface IRoom extends IRocketChatRecord {
 	featured?: true;
 	announcement?: string;
 	joinCodeRequired?: boolean;
+	linkPreview?: boolean;
 	announcementDetails?: {
 		style?: string;
 	};
