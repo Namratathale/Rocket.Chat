@@ -1967,6 +1967,8 @@
   "Email_two-factor_authentication": "Email two-factor authentication",
   "Email_verification_isnt_required": "Email verification to login is not required. To require, enable setting in <a>Accounts</a> > Registration",
   "Email_verified": "Email verified",
+  "Embed_Link_Previews": "Embed Link Previews",
+"Embed_Link_Previews_Description": "Enable or disable link previews specifically for this room/channel.",
   "Emoji": "Emoji",
   "EmojiCustomFilesystem": "Custom Emoji Filesystem",
   "EmojiCustomFilesystem_Description": "Specify how emojis are stored.",
