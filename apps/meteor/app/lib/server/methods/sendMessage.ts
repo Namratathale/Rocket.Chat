@@ -105,8 +105,15 @@ export async function executeSendMessage(
 			}
 		}
 
-		metrics.messagesSent.inc(); // TODO This line needs to be moved to it's proper place. See the comments on: https://github.com/RocketChat/Rocket.Chat/pull/5736
-		return await sendMessage(user, message, room, { previewUrls: extraInfo?.previewUrls });
+		metrics.messagesSent.inc();
+
+// Check if link previews should be enabled for this specific room
+// We check if it's explicitly set to false; otherwise, we default to the global behavior
+const isLinkPreviewEnabled = room.linkPreview !== false;
+
+return await sendMessage(user, message, room, { 
+    previewUrls: isLinkPreviewEnabled ? extraInfo?.previewUrls : undefined 
+});
 	} catch (err: any) {
 		SystemLogger.error({ msg: 'Error sending message:', err });
 
