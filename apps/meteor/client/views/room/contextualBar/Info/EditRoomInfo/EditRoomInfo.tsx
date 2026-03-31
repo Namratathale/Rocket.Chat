@@ -160,6 +160,7 @@ const EditRoomInfo = ({ room, onClickClose, onClickBack }: EditRoomInfoProps) =>
 			retentionExcludePinned,
 			retentionFilesOnly,
 			retentionIgnoreThreads,
+			linkPreview,
 			...formData
 		}: EditRoomInfoFormData) => {
 			const data = getDirtyFields<Partial<typeof defaultValues>>(formData, dirtyFields);
@@ -169,6 +170,7 @@ const EditRoomInfo = ({ room, onClickClose, onClickBack }: EditRoomInfoProps) =>
 				await saveAction({
 					rid: room._id,
 					...data,
+					linkPreview,
 					...((data.joinCode || 'joinCodeRequired' in data) && { joinCode: joinCodeRequired ? data.joinCode : '' }),
 					...((data.systemMessages || !hideSysMes) && {
 						systemMessages: hideSysMes && data.systemMessages,
@@ -228,6 +230,7 @@ const EditRoomInfo = ({ room, onClickClose, onClickBack }: EditRoomInfoProps) =>
 	const retentionExcludePinnedField = useId();
 	const retentionFilesOnlyField = useId();
 	const retentionIgnoreThreads = useId();
+	const linkPreviewField = useId();
 
 	const showAdvancedSettings = canViewReadOnly || readOnly || canViewArchived || canViewJoinCode || canViewHideSysMes;
 	const showRetentionPolicy = canEditRoomRetentionPolicy && retentionPolicy?.enabled;
@@ -386,6 +389,26 @@ const EditRoomInfo = ({ room, onClickClose, onClickBack }: EditRoomInfoProps) =>
 												</FieldHint>
 											</Field>
 										)}
+										<Field>
+    <FieldRow>
+        <FieldLabel htmlFor={linkPreviewField}>{t('Embed_Link_Previews')}</FieldLabel>
+        <Controller
+            control={control}
+            name='linkPreview'
+            render={({ field: { value, ...field } }) => (
+                <ToggleSwitch
+                    id={linkPreviewField}
+                    {...field}
+                    checked={value}
+                    aria-describedby={`${linkPreviewField}-hint`}
+                />
+            )}
+        />
+    </FieldRow>
+    <FieldHint id={`${linkPreviewField}-hint`}>
+        {t('Embed_Link_Previews_Description')}
+    </FieldHint>
+</Field>
 										{readOnly && (
 											<Field>
 												<FieldRow>
