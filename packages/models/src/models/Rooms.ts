@@ -734,6 +734,15 @@ export class RoomsRaw extends BaseRaw<IRoom> implements IRoomsModel {
 		return this.updateOne(query, update);
 	}
 
+	setLinkPreviewById(_id, linkPreview) {
+    const update = {
+        $set: {
+            linkPreview,
+        },
+    };
+    return this.update({ _id }, update);
+}
+
 	setRoomTopicById(roomId: IRoom['_id'], topic: IRoom['description']): Promise<UpdateResult> {
 		return this.updateOne({ _id: roomId }, { $set: { description: topic } });
 	}
