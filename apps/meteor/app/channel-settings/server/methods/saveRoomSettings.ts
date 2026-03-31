@@ -44,6 +44,11 @@ type RoomSettings = {
 	retentionIgnoreThreads: boolean;
 	retentionOverrideGlobal: boolean;
 	encrypted: boolean;
+	linkPreview: boolean; 
+    favorite: {
+        favorite: boolean;
+        defaultValue: boolean;
+    };
 	favorite: {
 		favorite: boolean;
 		defaultValue: boolean;
@@ -231,6 +236,15 @@ const validators: RoomSettingsValidators = {
 			});
 		}
 	},
+	async linkPreview({ userId, rid }) {
+        if (!(await hasPermissionAsync(userId, 'edit-room', rid))) {
+             throw new Meteor.Error('error-action-not-allowed', 'Editing room is not allowed', {
+                method: 'saveRoomSettings',
+                action: 'Editing_room',
+            });
+        }
+    },
+	
 };
 
 type RoomSettingsSavers = {
@@ -351,6 +365,10 @@ const settingSavers: RoomSettingsSavers = {
 	async roomAvatar({ value, rid, user }) {
 		await setRoomAvatar(rid, value, user);
 	},
+	async linkPreview({ value, rid }) {
+        // This calls the model to update the 'linkPreview' field in MongoDB
+        await Rooms.setLinkPreviewById(rid, value); 
+    },
 };
 
 declare module '@rocket.chat/ddp-client' {
@@ -387,6 +405,7 @@ const fields: (keyof RoomSettings)[] = [
 	'retentionOverrideGlobal',
 	'encrypted',
 	'favorite',
+	'linkPreview',
 ];
 
 const validate = <TRoomSetting extends keyof RoomSettings>(
